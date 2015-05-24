@@ -1,4 +1,4 @@
-package org.hongikNAS.ftp;
+package org.hongikNAS.ftpserver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +12,11 @@ public class FtpConfig {
 	private int port = 21; // default port
 	private int connectionLimit = 50; // default limit;
 
+	// public void readConfig()
+	// public void setPort(String newPort)
+	// public int getPort()
+	// public void setConnectionLimit(String newLimit)
+	// public int getConnectionLimit()
 	public FtpConfig() {
 		// # is comment in config file
 		File config = new File("ftp.config");

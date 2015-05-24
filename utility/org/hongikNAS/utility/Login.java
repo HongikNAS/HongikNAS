@@ -1,18 +1,40 @@
 package org.hongikNAS.utility;
 
-
-public class User {
+public class Login {
 
 	boolean authorized;
 	String userName;
 	String password;
 	DBController db;
 
-	public User(String inputuserName, String inputPassword) {
+	public Login() {
+		userName = "";
+		password = "";
+		authorized = false;
+		db = new DBController();
+	}
+
+	public Login(String inputuserName, String inputPassword) {
 		userName = inputuserName;
 		password = inputPassword;
 		authorized = false;
 		db = new DBController();
+	}
+
+	public String getUser() {
+		return userName;
+	}
+
+	public String getPass() {
+		return password;
+	}
+
+	public void setUser(String str) {
+		userName = str;
+	}
+
+	public void setPass(String str) {
+		password = str;
 	}
 
 	public boolean tryToAuthorize() {
@@ -74,7 +96,10 @@ public class User {
 		return authorized;
 	}
 
-	boolean isAuthorized() {
+	public boolean isAuthorized() {
+		if (authorized == false)
+			authorized = tryToAuthorize();
+
 		return authorized;
 	}
 
@@ -87,7 +112,7 @@ public class User {
 	public static void main(String[] args) {
 
 		System.out.println("TEST FOR DATABSE");
-		User test = new User("root", "1234");
+		Login test = new Login("root", "1234");
 		if (test.tryToAuthorize()) {
 			System.out.println("Successfully Login");
 		} else {
