@@ -1,2 +1,0 @@
-# HongikNAS
-Open NAS Project
