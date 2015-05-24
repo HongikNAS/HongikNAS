@@ -1,4 +1,4 @@
-package org.hongikNAS.ftp;
+package org.hongikNAS.ftpserver;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -59,15 +59,16 @@ public class FtpServer implements Runnable {
 
 					if (ftpConnState[j] == null
 							|| ftpConnState[j].isRun() == false) {
-						ftpConnState[j] = new FtpConnection(connection, true);
-						ftpConnState[j].start();
+						ftpConnState[j] = new FtpConnection(connection);
+						ftpConnState[j].start(true);
 						isConnected = true;
 						break;
 					}
 				}
 				if (isConnected == false) {
 					System.err.println("Error : Too many Connection");
-					new FtpConnection(connection, false); // just send 221 code
+					FtpConnection ftpTemp = new FtpConnection(connection);
+					ftpTemp.start(false); // just send 221 code
 				}
 			} catch (Exception e) {
 				System.out.println("FTP SERVER IS GONE");

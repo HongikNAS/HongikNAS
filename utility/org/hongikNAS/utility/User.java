@@ -1,6 +1,5 @@
 package org.hongikNAS.utility;
 
-
 public class User {
 
 	boolean authorized;
@@ -74,7 +73,10 @@ public class User {
 		return authorized;
 	}
 
-	boolean isAuthorized() {
+	public boolean isAuthorized() {
+		if (authorized == false)
+			authorized = tryToAuthorize();
+
 		return authorized;
 	}
 
