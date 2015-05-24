@@ -71,6 +71,7 @@ public class FtpServer implements Runnable {
 					ftpTemp.start(false); // just send 221 code
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.out.println("FTP SERVER IS GONE");
 				System.exit(1);
 			}

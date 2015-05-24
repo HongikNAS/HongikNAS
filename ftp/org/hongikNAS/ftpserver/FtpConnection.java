@@ -1,20 +1,23 @@
 package org.hongikNAS.ftpserver;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.hongikNAS.utility.User;
+import org.hongikNAS.ftpserver.command.FtpCommand;
+import org.hongikNAS.utility.Login;
 
 public class FtpConnection implements Runnable {
 
 	private Socket incoming;
-	public User account;
+	private Login account;
 	private PrintWriter outflow;
 	private BufferedReader inflow;
 	private boolean isRunning;
+	private final int debug = 1;
 
 	/*
 	 * public FtpConnection(Socket i) {
@@ -24,6 +27,24 @@ public class FtpConnection implements Runnable {
 	 */
 	public FtpConnection(Socket i) {
 		incoming = i;
+		account = new Login();
+	}
+
+	public String getUserName() {
+		return account.getUser();
+	}
+
+	public String getPassword() {
+		return account.getPass();
+	}
+
+	public void setUserName(String str) {
+		System.out.println("setUserName" + str);
+		account.setUser(str);
+	}
+
+	public void setPassword(String str) {
+		account.setPass(str);
 	}
 
 	public boolean isRun() {
@@ -42,26 +63,34 @@ public class FtpConnection implements Runnable {
 		isRunning = false;
 	}
 
+	public void printRecMessage(String str) {
+		if (debug == 1)
+			System.out.println(str);
+	}
+
 	public boolean ftpLogin() {
 
-		String id, password;
-		id = password = "";
+		String recMessage;// , id, password;
+		// id = password = "";
 		try {
-			id = inflow.readLine();
-			System.out.println(id);
+			recMessage = inflow.readLine();
+			printRecMessage(recMessage);
+			FtpCommand.analyzer(recMessage, this);
+			// System.out.println(id);
 
 			output("331 Please specify the password");
-			password = inflow.readLine();
-			System.out.println(password);
+			recMessage = inflow.readLine();
+			printRecMessage(recMessage);
+			FtpCommand.analyzer(recMessage, this);
+			// System.out.println(password);
 
-		} catch (Exception e) { // IOException??
+		} catch (IOException e) { // IOException??
 
 			output("530 user information not come properly");
 			connectionClose();
 			return false;
 		} // read id and password
 
-		account = new User(id, password);
 		if (account.isAuthorized()) {
 			output("230 User logged in");
 			return true;
@@ -98,11 +127,12 @@ public class FtpConnection implements Runnable {
 
 	public void run() {
 
-		String input;
+		String recMessage;
 		// control channel
 		while (isRun()) {
 			try {
-				input = inflow.readLine();
+				recMessage = inflow.readLine();
+				printRecMessage(recMessage);
 			} catch (Exception e) {
 				System.out.println("ERROR");
 			}
