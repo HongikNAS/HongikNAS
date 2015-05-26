@@ -1,5 +1,10 @@
 package kr.ac.hongik.nas.ftpserver.util;
 
+/**
+ * 
+ * @author Arubirate
+ *
+ */
 public class Login {
 
 	boolean authorized;

@@ -6,7 +6,13 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ * 
+ * @author Arubirate
+ *
+ */
 public class FtpConfig {
+	public static final String CONFIG_PATH = "src/main/resource/ftp.config";
 
 	private Scanner input;
 	private int port = 21; // default port
@@ -19,7 +25,7 @@ public class FtpConfig {
 	// public int getConnectionLimit()
 	public FtpConfig() {
 		// # is comment in config file
-		File config = new File("ftp.config");
+		File config = new File(CONFIG_PATH);
 
 		try {
 			input = new Scanner(config);
@@ -48,12 +54,10 @@ public class FtpConfig {
 					setConnectionLimit(st.nextToken());
 			}
 		} catch (NoSuchElementException e) {
-			System.err
-					.println("FTPConfig Error(3) : config file format is wrong");
+			System.err.println("FTPConfig Error(3) : config file format is wrong");
 			System.exit(1);
 		} catch (NullPointerException e) {
-			System.err
-					.println("FTPConfig Error(2) : Can't read Config file properly");
+			System.err.println("FTPConfig Error(2) : Can't read Config file properly");
 			System.exit(1);
 		} catch (IllegalStateException e) {
 			System.err.println("FTPConfig Error(1) : Can't read Config file");

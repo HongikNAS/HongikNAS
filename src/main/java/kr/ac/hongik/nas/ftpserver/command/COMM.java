@@ -1,4 +1,4 @@
-package kr.ac.hongik.nas.ftpserver.command.list;
+package kr.ac.hongik.nas.ftpserver.command;
 
 import kr.ac.hongik.nas.ftpserver.FtpConnection;
 

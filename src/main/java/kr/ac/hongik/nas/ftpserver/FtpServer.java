@@ -3,6 +3,11 @@ package kr.ac.hongik.nas.ftpserver;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * 
+ * @author Arubirate
+ *
+ */
 public class FtpServer implements Runnable {
 
 	boolean isRun;
@@ -57,8 +62,7 @@ public class FtpServer implements Runnable {
 				isConnected = false;
 				for (int j = 0; j < config.getConnectionLimit(); j++) {
 
-					if (ftpConnState[j] == null
-							|| ftpConnState[j].isRun() == false) {
+					if (ftpConnState[j] == null || ftpConnState[j].isRun() == false) {
 						ftpConnState[j] = new FtpConnection(connection);
 						ftpConnState[j].start(true);
 						isConnected = true;

@@ -1,10 +1,17 @@
-package kr.ac.hongik.nas.ftpserver.command.list;
+package kr.ac.hongik.nas.ftpserver.command;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import kr.ac.hongik.nas.ftpserver.FtpConnection;
+import kr.ac.hongik.nas.ftpserver.command.list.PASS;
+import kr.ac.hongik.nas.ftpserver.command.list.USER;
 
+/**
+ * 
+ * @author Arubirate
+ *
+ */
 public class FtpCommand {
 
 	static private final HashMap<String, COMM> CommandList;

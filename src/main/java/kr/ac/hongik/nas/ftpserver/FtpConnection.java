@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import kr.ac.hongik.nas.ftpserver.command.list.FtpCommand;
+import kr.ac.hongik.nas.ftpserver.command.FtpCommand;
 import kr.ac.hongik.nas.ftpserver.util.Login;
 
 public class FtpConnection implements Runnable {

@@ -6,6 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * 
+ * @author Arubirate
+ *
+ */
 public final class DBController {
 	// Connection ����
 	Connection con = null;
@@ -42,8 +47,7 @@ public final class DBController {
 			System.out.println("DB Conn Start");
 
 		try {
-			con = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/hongiknas", "root", "1234");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hongiknas", "root", "1234");
 		} catch (SQLException e) {
 			System.out.println("Database Connection ERROR");
 			System.exit(1);
