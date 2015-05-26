@@ -1,4 +1,4 @@
-package org.hongikNAS.ftpserver;
+package kr.ac.hongik.nas.ftpserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.hongikNAS.ftpserver.command.FtpCommand;
-import org.hongikNAS.utility.Login;
+import kr.ac.hongik.nas.ftpserver.command.list.FtpCommand;
+import kr.ac.hongik.nas.ftpserver.util.Login;
 
 public class FtpConnection implements Runnable {
 

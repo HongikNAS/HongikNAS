@@ -1,4 +1,4 @@
-package org.hongikNAS.utility;
+package kr.ac.hongik.nas.ftpserver.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public final class DBController {
-	// Connection ¼³Á¤
+	// Connection ï¿½ï¿½ï¿½ï¿½
 	Connection con = null;
 	Statement stmt = null;
 	ResultSet rs = null;

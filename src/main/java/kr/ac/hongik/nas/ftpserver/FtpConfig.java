@@ -1,4 +1,4 @@
-package org.hongikNAS.ftpserver;
+package kr.ac.hongik.nas.ftpserver;
 
 import java.io.File;
 import java.io.FileNotFoundException;

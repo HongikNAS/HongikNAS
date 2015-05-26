@@ -1,4 +1,4 @@
-package org.hongikNAS.ftpserver;
+package kr.ac.hongik.nas.ftpserver;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,8 +14,8 @@ public class FtpServer implements Runnable {
 	private FtpConfig config;
 
 	// FtpConfig
-	// Connection Limit ¼³Á¤
-	// Server Port ¼³Á¤
+	// Connection Limit ï¿½ï¿½ï¿½ï¿½
+	// Server Port ï¿½ï¿½ï¿½ï¿½
 
 	public FtpServer() {
 

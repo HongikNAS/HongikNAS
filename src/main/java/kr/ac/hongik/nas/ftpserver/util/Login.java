@@ -1,4 +1,4 @@
-package org.hongikNAS.utility;
+package kr.ac.hongik.nas.ftpserver.util;
 
 public class Login {
 
