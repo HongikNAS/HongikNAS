@@ -57,13 +57,13 @@ public class FtpServer implements Runnable {
 			try {
 				connection = server.accept();
 				if (debug == 1)
-					System.out.println("FTP CONNECTION ESTABILISHED");
+					System.out.println("FTP CONNECTION REQUEST");
 
 				isConnected = false;
 				for (int j = 0; j < config.getConnectionLimit(); j++) {
 
 					if (ftpConnState[j] == null || ftpConnState[j].isRun() == false) {
-						ftpConnState[j] = new FtpConnection(connection);
+						ftpConnState[j] = new FtpConnection(connection, config.getRootPath());
 						ftpConnState[j].start(true);
 						isConnected = true;
 						break;
@@ -71,7 +71,7 @@ public class FtpServer implements Runnable {
 				}
 				if (isConnected == false) {
 					System.err.println("Error : Too many Connection");
-					FtpConnection ftpTemp = new FtpConnection(connection);
+					FtpConnection ftpTemp = new FtpConnection(connection, config.getRootPath());
 					ftpTemp.start(false); // just send 221 code
 				}
 			} catch (Exception e) {

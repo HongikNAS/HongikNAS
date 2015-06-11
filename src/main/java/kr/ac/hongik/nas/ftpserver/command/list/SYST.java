@@ -3,12 +3,12 @@ package kr.ac.hongik.nas.ftpserver.command.list;
 import kr.ac.hongik.nas.ftpserver.FtpConnection;
 import kr.ac.hongik.nas.ftpserver.command.COMM;
 
-public class USER extends COMM {
+public class SYST extends COMM{
 
 	public void excute(FtpConnection conn, String in) {
-
-		// if( in == "" || in == null ) No input
-		conn.getAccount().setUser(in);
-		conn.output("331 Please Specified Password"); // Sending Message
+		
+		//if( in != "" ) suspicious data 
+		
+		conn.output("215 UNIX Type: L8"); // Just Send it..(now.)
 	}
 }

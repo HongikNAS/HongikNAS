@@ -36,7 +36,7 @@ public final class DBController {
 			if (con != null)
 				con.close();
 		} catch (SQLException e) {
-			System.out.println("Database Close ERROR");
+			System.err.println("Database Close ERROR");
 			System.exit(1);
 		}
 	}
@@ -47,9 +47,15 @@ public final class DBController {
 			System.out.println("DB Conn Start");
 
 		try {
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hongiknas", "root", "1234");
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection
+					//("jdbc:mysql://localhost:3306/dbname?user=root&password=1234");
+					("jdbc:mysql://localhost:3306/hongikNAS", "root", "1234");
 		} catch (SQLException e) {
-			System.out.println("Database Connection ERROR");
+			System.err.println("Database Connection ERROR");
+			System.exit(1);
+		} catch (ClassNotFoundException e) {
+			System.err.println("Class Not Found");
 			System.exit(1);
 		}
 
@@ -64,7 +70,7 @@ public final class DBController {
 			rs = stmt.executeQuery(strQuery);
 
 		} catch (SQLException e) {
-			System.out.println("Database SELECT QUERY ERROR");
+			System.err.println("Database SELECT QUERY ERROR");
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -76,7 +82,7 @@ public final class DBController {
 		try {
 			res = rs.next();
 		} catch (SQLException e) {
-			System.out.println("Database ResultSetNext ERROR");
+			System.err.println("Database ResultSetNext ERROR");
 			System.exit(1);
 		}
 
@@ -88,7 +94,7 @@ public final class DBController {
 		try {
 			res = rs.getInt(column);
 		} catch (SQLException e) {
-			System.out.println("Database GetInt ERROR");
+			System.err.println("Database GetInt ERROR");
 			System.exit(1);
 		}
 		return res;

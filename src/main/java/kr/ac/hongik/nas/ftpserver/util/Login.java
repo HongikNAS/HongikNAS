@@ -44,6 +44,9 @@ public class Login {
 
 	public boolean tryToAuthorize() {
 
+		
+		if( getPass() == "" || getUser() == "" )
+			return false;
 		String sql = null;
 		int cnt = 0;
 
@@ -61,42 +64,6 @@ public class Login {
 		if (cnt == 1)
 			authorized = true;
 		db.close();
-
-		/*
-		 * // sqlite version try { Class.forName("org.sqlite.JDBC"); c =
-		 * DriverManager.getConnection("jdbc:sqlite:hongikNAS.db");
-		 * c.setAutoCommit(false);
-		 * System.out.println("Opened database successfully");
-		 * 
-		 * stmt = c.createStatement(); String sql =
-		 * "SELECT count(*) as cnt FROM IDENTITY " + "WHERE user = '" + userName
-		 * + "'" + " AND password = '" + password + "';"; // String sql =
-		 * "SELECT * FROM IDENTITY"; System.out.println(sql); rs =
-		 * stmt.executeQuery(sql); System.out.println(rs.getRow()); /* if
-		 * (rs.getRow() == 1) { // existing userName authorized = true; }
-		 */
-
-		/*
-		 * while (rs.next()) {
-		 * 
-		 * // String innerName; String innerPassword; // innerName =
-		 * rs.getString("user"); // innerPassword = rs.getString("password"); //
-		 * System.out.println("ID = " + innerName); //
-		 * System.out.println("PASSWORD = " + innerPassword);
-		 * 
-		 * cnt = rs.getInt("cnt"); System.out.println(cnt); } if (cnt == 1)
-		 * authorized = true; rs.close(); stmt.close(); c.close();
-		 * 
-		 * } catch (Exception e) { System.err.println(e.getClass().getName() +
-		 * ": " + e.getMessage()); System.exit(1); }
-		 */
-		/*
-		 * catch (ClassNotFoundException e) { } e.printStackTrace();
-		 * System.err.println(e.getClass().getName() + ": " + e.getMessage()); }
-		 * catch (SQLException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); System.err.println(e.getClass().getName() + ": "
-		 * + e.getMessage()); }
-		 */
 
 		return authorized;
 	}

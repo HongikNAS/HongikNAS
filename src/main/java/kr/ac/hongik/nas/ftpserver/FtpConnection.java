@@ -18,35 +18,27 @@ public class FtpConnection implements Runnable {
 	private BufferedReader inflow;
 	private boolean isRunning;
 	private final int debug = 1;
+	
+	private final String ROOTPATH; // never changed
+	private String currentPath;
 
 	/*
 	 * public FtpConnection(Socket i) {
 	 * 
 	 * System.out.println("Conn Setting Up"); incoming = i;
 	 * System.out.println("Conn Set up Done"); }
-	 */
-	public FtpConnection(Socket i) {
+	 */	
+	public FtpConnection(Socket i, String rPATH) {
+		
 		incoming = i;
 		account = new Login();
+		ROOTPATH = rPATH;
 	}
 
-	public String getUserName() {
-		return account.getUser();
+	public Login getAccount() {
+		return account;
 	}
-
-	public String getPassword() {
-		return account.getPass();
-	}
-
-	public void setUserName(String str) {
-		System.out.println("setUserName" + str);
-		account.setUser(str);
-	}
-
-	public void setPassword(String str) {
-		account.setPass(str);
-	}
-
+	
 	public boolean isRun() {
 		return isRunning;
 	}
@@ -54,6 +46,7 @@ public class FtpConnection implements Runnable {
 	public void output(String out) {
 		try {
 			outflow.println(out);
+			System.out.println("Send to Cient -> " + out);
 		} catch (Exception e) {
 			System.out.println("Error printing to outflow");
 		}
@@ -102,7 +95,6 @@ public class FtpConnection implements Runnable {
 	}
 
 	public void start(boolean isConnect) {
-		// running = true;
 		try {
 			outflow = new PrintWriter(new OutputStreamWriter(
 					incoming.getOutputStream()), true);
@@ -113,15 +105,18 @@ public class FtpConnection implements Runnable {
 			System.err.println("Stream ERROR");
 		}
 
-		output("220 (login HongikNAS)"); // connection established
 
+		System.out.println("FTP CONNECTION ESTABLISHED");
+		output("220 (login HongikNAS)"); // connection established
+		System.out.println(isConnect);
 		if (isConnect) { // true
 
-			if (ftpLogin())
-				new Thread(this).start();
-
-		} else {// isConnect == false
-			output("221 Too many User");
+			isRunning = true;
+			new Thread(this).start();
+		}else {
+			output("221 Too Many User");
+			System.err.println("Too many user");
+			System.exit(1);
 		}
 	}
 
@@ -131,10 +126,16 @@ public class FtpConnection implements Runnable {
 		// control channel
 		while (isRun()) {
 			try {
+				System.out.println("Waiting For Message");
 				recMessage = inflow.readLine();
 				printRecMessage(recMessage);
+				FtpCommand.analyzer(recMessage, this);
+				
 			} catch (Exception e) {
+				
+				output("421 Unknown Error Occured");
 				System.out.println("ERROR");
+				System.exit(1);
 			}
 		}
 
