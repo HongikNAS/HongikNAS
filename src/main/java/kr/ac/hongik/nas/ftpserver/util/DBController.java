@@ -12,7 +12,7 @@ import java.sql.Statement;
  *
  */
 public final class DBController {
-	// Connection ����
+	
 	Connection con = null;
 	Statement stmt = null;
 	ResultSet rs = null;
