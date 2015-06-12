@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-
+import kr.ac.hongik.nas.ftpserver.command.CommandNullException;
 import kr.ac.hongik.nas.ftpserver.command.FtpCommand;
 import kr.ac.hongik.nas.ftpserver.util.Login;
 
@@ -19,6 +19,8 @@ public class FtpConnection implements Runnable {
 	private boolean isRunning;
 	private final int debug = 1;
 	
+	private Socket dataClient;
+	
 	private final String ROOTPATH; // never changed
 	private String currentPath;
 
@@ -28,13 +30,24 @@ public class FtpConnection implements Runnable {
 	 * System.out.println("Conn Setting Up"); incoming = i;
 	 * System.out.println("Conn Set up Done"); }
 	 */	
+	
 	public FtpConnection(Socket i, String rPATH) {
 		
 		incoming = i;
 		account = new Login();
-		ROOTPATH = rPATH;
+		ROOTPATH = rPATH; // root PATH
 	}
 
+	public String getRootPath() {
+	
+		return ROOTPATH;
+	}
+	public void setCurrentPath(String in) {
+		currentPath = in;
+	}
+	public String getCurrentPath() {
+		return currentPath;
+	}
 	public Login getAccount() {
 		return account;
 	}
@@ -61,38 +74,6 @@ public class FtpConnection implements Runnable {
 			System.out.println(str);
 	}
 
-	public boolean ftpLogin() {
-
-		String recMessage;// , id, password;
-		// id = password = "";
-		try {
-			recMessage = inflow.readLine();
-			printRecMessage(recMessage);
-			FtpCommand.analyzer(recMessage, this);
-			// System.out.println(id);
-
-			output("331 Please specify the password");
-			recMessage = inflow.readLine();
-			printRecMessage(recMessage);
-			FtpCommand.analyzer(recMessage, this);
-			// System.out.println(password);
-
-		} catch (IOException e) { // IOException??
-
-			output("530 user information not come properly");
-			connectionClose();
-			return false;
-		} // read id and password
-
-		if (account.isAuthorized()) {
-			output("230 User logged in");
-			return true;
-		} else {
-			output("530 Login incorrect");
-			return false;
-		}
-
-	}
 
 	public void start(boolean isConnect) {
 		try {
@@ -131,13 +112,52 @@ public class FtpConnection implements Runnable {
 				printRecMessage(recMessage);
 				FtpCommand.analyzer(recMessage, this);
 				
-			} catch (Exception e) {
+			} catch(CommandNullException e) {
+				output("421 No Command - Connection Close");
+				System.out.println("No Command");
+				connectionClose();
+			} 
+			catch (Exception e) {
 				
 				output("421 Unknown Error Occured");
 				System.out.println("ERROR");
-				System.exit(1);
+				connectionClose();
 			}
 		}
-
 	}
 }
+	
+	
+
+/*	public boolean ftpLogin() {
+
+		String recMessage;// , id, password;
+		// id = password = "";
+		try {
+			recMessage = inflow.readLine();
+			printRecMessage(recMessage);
+			FtpCommand.analyzer(recMessage, this);
+			// System.out.println(id);
+
+			output("331 Please specify the password");
+			recMessage = inflow.readLine();
+			printRecMessage(recMessage);
+			FtpCommand.analyzer(recMessage, this);
+			// System.out.println(password);
+
+		} catch (IOException e) { // IOException??
+
+			output("530 user information not come properly");
+			connectionClose();
+			return false;
+		} // read id and password
+
+		if (account.isAuthorized()) {
+			output("230 User logged in");
+			return true;
+		} else {
+			output("530 Login incorrect");
+			return false;
+		}
+
+	}*/

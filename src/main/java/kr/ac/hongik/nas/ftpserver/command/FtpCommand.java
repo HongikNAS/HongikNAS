@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import kr.ac.hongik.nas.ftpserver.FtpConnection;
-import kr.ac.hongik.nas.ftpserver.command.list.PASS;
-import kr.ac.hongik.nas.ftpserver.command.list.USER;
-import kr.ac.hongik.nas.ftpserver.command.list.SYST;
-import kr.ac.hongik.nas.ftpserver.command.list.Unknown;
+import kr.ac.hongik.nas.ftpserver.command.list.*;
 /**
  * 
  * @author Arubirate
@@ -21,10 +18,11 @@ public class FtpCommand {
 		CommandList.put("USER", new USER());
 		CommandList.put("PASS", new PASS());
 		CommandList.put("SYST", new SYST());
+		CommandList.put("QUIT", new QUIT());
 		CommandList.put("UNKNOWN", new Unknown());
 	}
 
-	static public void analyzer(String in, FtpConnection conn) {
+	static public void analyzer(String in, FtpConnection conn) throws CommandNullException {
 
 		StringTokenizer st = new StringTokenizer(in);
 		COMM func;
@@ -37,11 +35,12 @@ public class FtpCommand {
 		}
 		
 		if( funcName != "" ) {
-			func = CommandList.get(funcName);
+			if( (func = CommandList.get(funcName)) == null  ) { 
+				func = CommandList.get("UNKNOWN");
+			}
 			func.excute(conn, inData);
 		}else {
-			func = CommandList.get("UNKNOWN");
-			func.excute(conn, "");
+			throw new CommandNullException();
 		}
 	}
 }
