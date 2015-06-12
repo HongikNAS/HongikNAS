@@ -6,8 +6,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import kr.ac.hongik.nas.ftpserver.command.CommandNullException;
-import kr.ac.hongik.nas.ftpserver.command.FtpCommand;
+
+import kr.ac.hongik.nas.ftpserver.command.*;
+import kr.ac.hongik.nas.ftpserver.exception.CommandNullException;
 import kr.ac.hongik.nas.ftpserver.util.Login;
 
 public class FtpConnection implements Runnable {
@@ -19,7 +20,9 @@ public class FtpConnection implements Runnable {
 	private boolean isRunning;
 	private final int debug = 1;
 	
-	private Socket dataClient;
+	private Socket dataClientSocket;
+	private String dataClientAddress;
+	private Integer dataClientPort=0;
 	
 	private final String ROOTPATH; // never changed
 	private String currentPath;
@@ -37,9 +40,39 @@ public class FtpConnection implements Runnable {
 		account = new Login();
 		ROOTPATH = rPATH; // root PATH
 	}
-
-	public String getRootPath() {
 	
+	
+	/******* setter and getter *******/
+	public Socket getDataSocket() {
+		// TODO check passive mode
+		
+		if( dataClientPort != 0 ) { // Port is set
+		
+			try {
+				System.out.println(dataClientAddress + ' ' + dataClientPort.toString() );
+				dataClientSocket= new Socket(dataClientAddress, dataClientPort);
+			}catch( IOException e ){ 
+				System.err.println("getDataSocket() : return Null");
+				return null;
+			}
+			
+			return dataClientSocket;
+		}
+		return null;
+	}
+	public void setDataClientPort(Integer port) {
+		dataClientPort = port;
+	}
+	public int getDataClientPort() {
+		return dataClientPort.intValue();
+	}
+	public void setDataClientAddress(String address) {
+		dataClientAddress = address;
+	}
+	public String getDataClientAddress() {
+		return dataClientAddress;
+	}
+	public String getRootPath() {
 		return ROOTPATH;
 	}
 	public void setCurrentPath(String in) {
@@ -51,11 +84,12 @@ public class FtpConnection implements Runnable {
 	public Login getAccount() {
 		return account;
 	}
-	
 	public boolean isRun() {
 		return isRunning;
 	}
-
+	/******* end of setter and getter *******/
+	
+	
 	public void output(String out) {
 		try {
 			outflow.println(out);
@@ -67,6 +101,11 @@ public class FtpConnection implements Runnable {
 
 	public void connectionClose() {
 		isRunning = false;
+	}
+	public void dataSocketClose() {
+		dataClientSocket = null;
+		dataClientAddress = "";
+		dataClientPort = 0;
 	}
 
 	public void printRecMessage(String str) {

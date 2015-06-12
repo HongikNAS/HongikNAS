@@ -1,4 +1,4 @@
-package kr.ac.hongik.nas.ftpserver.command;
+package kr.ac.hongik.nas.ftpserver.exception;
 
 public class CommandNullException extends Exception{
 
