@@ -23,7 +23,6 @@ public class FtpServer implements Runnable {
 	// Server Port ����
 
 	public FtpServer() {
-
 		config = new FtpConfig(); // read config;
 		ftpConnState = new FtpConnection[config.getConnectionLimit()];
 		try {
@@ -31,7 +30,7 @@ public class FtpServer implements Runnable {
 		} catch (Exception e) {
 			System.err.println("SERVER PORT IS NOT SET");
 			System.err.println(e);
-			System.exit(1);
+			System.exit(1); // TODO should remove
 		}
 	}
 
@@ -40,8 +39,6 @@ public class FtpServer implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 		FtpServer ftpServer = new FtpServer();
 		Thread serverThread = new Thread(ftpServer);
 		serverThread.start();
@@ -52,17 +49,17 @@ public class FtpServer implements Runnable {
 		isRun = true;
 		System.out.println("FTP Server by HongikNAS");
 		while (running()) {
-
-			boolean isConnected;
+			boolean isConnected = false;
 			try {
 				connection = server.accept();
 				if (debug == 1)
 					System.out.println("FTP CONNECTION REQUEST");
-
-				isConnected = false;
+				
+				//TODO define findEmptyConnect()
 				for (int j = 0; j < config.getConnectionLimit(); j++) {
 
 					if (ftpConnState[j] == null || ftpConnState[j].isRun() == false) {
+						
 						ftpConnState[j] = new FtpConnection(connection, config.getRootPath());
 						ftpConnState[j].start(true);
 						isConnected = true;
@@ -77,6 +74,7 @@ public class FtpServer implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("FTP SERVER IS GONE");
+				// TODO request remove
 				System.exit(1);
 			}
 		}

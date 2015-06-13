@@ -16,7 +16,7 @@ public final class DBController {
 	Connection con = null;
 	Statement stmt = null;
 	ResultSet rs = null;
-	final int debug = 1;
+	//final int debug = 1;
 
 	public DBController() {
 	}
@@ -43,8 +43,6 @@ public final class DBController {
 
 	public void getConn() {
 		// basic option : mysql
-		if (debug == 1)
-			System.out.println("DB Conn Start");
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -63,8 +61,6 @@ public final class DBController {
 
 	public void excuteSelect(String strQuery) {
 
-		if (debug == 1)
-			System.out.println(strQuery);
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(strQuery);

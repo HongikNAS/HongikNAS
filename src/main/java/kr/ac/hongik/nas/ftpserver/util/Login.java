@@ -3,8 +3,8 @@ package kr.ac.hongik.nas.ftpserver.util;
 /**
  * 
  * @author Arubirate
- *
- */
+ *TODO Login to user
+ */  
 public class Login {
 
 	boolean authorized;
@@ -42,9 +42,7 @@ public class Login {
 		password = str;
 	}
 
-	public boolean tryToAuthorize() {
-
-		
+	public boolean tryToAuthorize() {		
 		if( getPass() == "" || getUser() == "" )
 			return false;
 		String sql = null;
@@ -73,36 +71,5 @@ public class Login {
 			authorized = tryToAuthorize();
 
 		return authorized;
-	}
-
-	/***
-	 * For Testing
-	 * 
-	 * @param args
-	 */
-
-	public static void main(String[] args) {
-
-		System.out.println("TEST FOR DATABSE");
-		Login test = new Login("root", "1234");
-		if (test.tryToAuthorize()) {
-			System.out.println("Successfully Login");
-		} else {
-			System.out.println("Unable to Comply");
-		}
-
-		/*
-		 * Connection c = null; Statement stmt = null;
-		 * 
-		 * try { Class.forName("org.sqlite.JDBC"); c =
-		 * DriverManager.getConnection("jdbc:sqlite:test.db");
-		 * System.out.println("Opened database successfully");
-		 * 
-		 * } catch (ClassNotFoundException e) { e.printStackTrace();
-		 * System.err.println(e.getClass().getName() + ": " + e.getMessage()); }
-		 * catch (SQLException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); System.err.println(e.getClass().getName() + ": "
-		 * + e.getMessage()); }
-		 */
 	}
 }
